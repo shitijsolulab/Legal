@@ -45,28 +45,28 @@ type WorkflowContent = {
 };
 
 const HERO = {
-  tagline: "The AI operating system for accounting.",
-  sub: "Automate AP/AR, bank reconciliation, expense management, and the month-end close. AI does the busywork and drafts every entry — your controller reviews and approves before anything posts.",
+  tagline: "The AI operating system for legal.",
+  sub: "Automate contract review, legal research, due diligence, and compliance monitoring. AI does the first pass and drafts the work product — your attorneys review and approve before anything goes out.",
 };
 
-// The single, accounting-specific workflow shown in the before/after section.
+// The single, legal-specific workflow shown in the before/after section.
 const CLOSE_WORKFLOW: WorkflowContent = {
-  title: "Invoice-to-approval, done in minutes.",
-  before: "45+ minutes per invoice, keying data across email, drive, and your ERP.",
-  after: "5 minutes: AI extracts, matches, and validates — you review and approve.",
+  title: "Contract review, done in minutes.",
+  before: "60+ minutes per contract, redlining clause by clause against your playbook.",
+  after: "10 minutes: AI reviews against your playbook — you refine and send.",
   steps: [
-    { label: "Invoice arrives", detail: "A vendor emails an invoice into your AP inbox." },
-    { label: "Extract", detail: "Document intelligence reads line items, totals, and tax." },
-    { label: "Match", detail: "3-way match against PO and receipt; duplicate check." },
-    { label: "Validate", detail: "GL coding, approval routing, and policy checks applied." },
-    { label: "Approve", detail: "Your controller reviews the draft and approves in one click." },
-    { label: "Post", detail: "Journal entry written back to QuickBooks, Xero, or NetSuite." },
+    { label: "Contract arrives", detail: "A counterparty emails a draft agreement for review." },
+    { label: "Extract", detail: "Document intelligence reads clauses, parties, and key dates." },
+    { label: "Compare", detail: "Each clause checked against your playbook and precedent." },
+    { label: "Flag risk", detail: "Missing protections, off-market terms, and red flags surfaced." },
+    { label: "Review", detail: "Your attorney reviews the redline and edits in one view." },
+    { label: "Send", detail: "Approved redline returned to the counterparty." },
   ],
 };
 
 // ---------------- Copilot library (interactive catalog) ----------------
 
-type CopilotGroup = "apar" | "close" | "compliance";
+type CopilotGroup = "review" | "research" | "compliance";
 
 type Copilot = {
   group: CopilotGroup;
@@ -85,322 +85,321 @@ type Copilot = {
 
 const COPILOT_GROUPS: { slug: CopilotGroup | "all"; label: string }[] = [
   { slug: "all", label: "All" },
-  { slug: "apar", label: "AP / AR" },
-  { slug: "close", label: "Close & Reporting" },
-  { slug: "compliance", label: "Compliance & Audit" },
+  { slug: "review", label: "Contract & Review" },
+  { slug: "research", label: "Research & Drafting" },
+  { slug: "compliance", label: "Compliance & Risk" },
 ];
 
 const GROUP_META: Record<CopilotGroup, { label: string; accent: string }> = {
-  // Restrained, finance-appropriate accents so each family reads distinctly
+  // Restrained, profession-appropriate accents so each family reads distinctly
   // without leaving the neutral theme.
-  apar: { label: "AP / AR", accent: "#4f9dde" },
-  close: { label: "Close & Reporting", accent: "#3f9a7f" },
-  compliance: { label: "Compliance & Audit", accent: "#8a7fd0" },
+  review: { label: "Contract & Review", accent: "#4f9dde" },
+  research: { label: "Research & Drafting", accent: "#3f9a7f" },
+  compliance: { label: "Compliance & Risk", accent: "#8a7fd0" },
 };
 
 const COPILOTS: Copilot[] = [
   {
-    group: "apar",
-    label: "AP / AR",
-    title: "Invoice Processing & AP Approval Copilot",
-    goal: "Validate supplier invoices, run a 3-way match, catch duplicates, and route them for approval.",
-    persona: "AP Accountant",
-    approver: "Controller",
-    trigger: "A supplier emails an invoice to your AP inbox.",
+    group: "review",
+    label: "Contract & Review",
+    title: "Contract Review & Redlining Copilot",
+    goal: "Review incoming contracts against your playbook, redline deviations, and flag missing protections.",
+    persona: "Associate",
+    approver: "Partner",
+    trigger: "A counterparty emails a draft agreement for review.",
     actions: [
-      "Extracts line items, totals, and tax automatically",
-      "Matches the invoice to its PO and goods receipt",
-      "Flags duplicates and out-of-policy amounts",
-      "Applies GL coding and routes for approval",
-      "Writes a plain-language validation summary",
+      "Extracts clauses, parties, defined terms, and key dates",
+      "Compares each clause against your playbook positions",
+      "Flags missing protections and off-market terms",
+      "Drafts a redline with suggested language",
+      "Writes a plain-language risk summary",
+    ],
+    value: [
+      "Faster turnaround on every draft",
+      "Consistent playbook enforcement",
+      "Nothing missed on the first pass",
+      "A defensible review record",
+    ],
+    runtime: "3m 12s",
+    trace: [
+      { kind: "run", text: "connecting to document store…" },
+      { kind: "ok", text: "reading MSA_Acme_v3.docx" },
+      { kind: "ok", text: "42 clauses extracted" },
+      { kind: "ok", text: "compared against playbook (SaaS · vendor)" },
+      { kind: "ok", text: "6 deviations · 2 missing clauses flagged" },
+      { kind: "ok", text: "redline + risk summary drafted" },
+      { kind: "wait", text: "waiting on approval (Partner)" },
+      { kind: "ok", text: "approved by R. Mehta" },
+      { kind: "ok", text: "redline returned to counterparty" },
+      { kind: "done", text: "done in 3m 12s" },
+    ],
+  },
+  {
+    group: "review",
+    label: "Contract & Review",
+    title: "Due Diligence Copilot",
+    goal: "Review a deal data room, extract key terms, and surface risks across hundreds of documents.",
+    persona: "M&A Associate",
+    approver: "Partner",
+    trigger: "A deal data room is shared for review.",
+    actions: [
+      "Classifies and indexes every document in the data room",
+      "Extracts change-of-control, assignment, and termination terms",
+      "Flags required consents and liability exposure",
+      "Builds an issues list ranked by severity",
+      "Drafts sections of the diligence memo",
+    ],
+    value: [
+      "Weeks of review compressed into days",
+      "Nothing overlooked in the data room",
+      "Consistent issue-spotting",
+      "A ready-to-edit diligence memo",
+    ],
+    runtime: "6m 40s",
+    trace: [
+      { kind: "run", text: "connecting to data room…" },
+      { kind: "ok", text: "318 documents classified" },
+      { kind: "ok", text: "key terms extracted from 41 contracts" },
+      { kind: "ok", text: "9 change-of-control clauses flagged" },
+      { kind: "ok", text: "3 required consents identified" },
+      { kind: "ok", text: "issues list + memo draft ready" },
+      { kind: "wait", text: "waiting on approval (Partner)" },
+      { kind: "done", text: "done in 6m 40s" },
+    ],
+  },
+  {
+    group: "review",
+    label: "Contract & Review",
+    title: "Lease & Document Abstraction Copilot",
+    goal: "Abstract leases and long-form agreements into structured summaries of key terms and dates.",
+    persona: "Paralegal",
+    approver: "Associate",
+    trigger: "A lease or agreement is uploaded for abstraction.",
+    actions: [
+      "Reads the full document, including exhibits",
+      "Extracts rent, term, renewal, and option dates",
+      "Captures obligations, restrictions, and notice periods",
+      "Flags ambiguous or non-standard provisions",
+      "Produces a structured abstract for review",
     ],
     value: [
       "No manual data entry",
-      "Duplicate and overbilling caught before payment",
-      "Faster approval cycles",
-      "A clean, defensible audit trail",
+      "Key dates never missed",
+      "A consistent abstract format",
+      "A searchable record of every term",
     ],
-    runtime: "2m 41s",
+    runtime: "2m 05s",
     trace: [
-      { kind: "run", text: "connecting to AP inbox…" },
-      { kind: "ok", text: "reading invoice_0417.pdf" },
-      { kind: "ok", text: "matched vendor: Acme Supplies" },
-      { kind: "ok", text: "3-way match: PO-2214 ✓ receipt ✓" },
-      { kind: "ok", text: "no duplicate found" },
-      { kind: "ok", text: "GL coded · validation summary ready" },
-      { kind: "wait", text: "waiting on approval (Controller)" },
-      { kind: "ok", text: "approved by A. Reyes" },
-      { kind: "ok", text: "posted to QuickBooks · confirmation sent" },
-      { kind: "done", text: "done in 2m 41s" },
+      { kind: "run", text: "reading lease_1200_Market.pdf" },
+      { kind: "ok", text: "3 exhibits parsed" },
+      { kind: "ok", text: "rent, term & renewal dates extracted" },
+      { kind: "ok", text: "4 critical dates captured" },
+      { kind: "ok", text: "1 non-standard clause flagged" },
+      { kind: "ok", text: "abstract drafted" },
+      { kind: "wait", text: "waiting on approval (Associate)" },
+      { kind: "done", text: "done in 2m 05s" },
     ],
   },
   {
-    group: "apar",
-    label: "AP / AR",
-    title: "AR Collections & Dunning Copilot",
-    goal: "Prioritize overdue receivables and draft personalized collection emails for your review.",
-    persona: "AR Specialist",
-    approver: "Controller",
-    trigger: "An invoice passes its due date, or on your weekly AR run.",
+    group: "research",
+    label: "Research & Drafting",
+    title: "Legal Research Copilot",
+    goal: "Research a legal question across primary sources and return a cited memo.",
+    persona: "Associate",
+    approver: "Supervising Attorney",
+    trigger: "You pose a research question or issue.",
     actions: [
-      "Pulls the aging report and ranks accounts by risk",
-      "Reconciles payments already received",
-      "Drafts a tailored reminder per customer and stage",
-      "Suggests next steps for high-risk accounts",
-      "Logs every touch against the customer record",
+      "Searches case law, statutes, and secondary sources",
+      "Identifies controlling and persuasive authority",
+      "Checks whether cases are still good law",
+      "Synthesizes findings into a memo with citations",
+      "Notes counter-arguments and open questions",
     ],
     value: [
-      "Lower DSO",
-      "Consistent, on-time follow-up",
-      "Less time chasing payments",
-      "Earlier warning on at-risk accounts",
+      "Faster research turnaround",
+      "Grounded in cited authority",
+      "Fewer missed precedents",
+      "A ready-to-edit memo",
     ],
-    runtime: "1m 48s",
+    runtime: "4m 18s",
     trace: [
-      { kind: "run", text: "connecting to ERP…" },
-      { kind: "ok", text: "aging report pulled · 37 open invoices" },
-      { kind: "ok", text: "payments reconciled" },
-      { kind: "ok", text: "12 reminders drafted by stage" },
-      { kind: "ok", text: "2 accounts flagged high-risk" },
-      { kind: "wait", text: "waiting on approval (Controller)" },
-      { kind: "ok", text: "approved · reminders queued to send" },
-      { kind: "done", text: "done in 1m 48s" },
+      { kind: "run", text: "searching case law + statutes…" },
+      { kind: "ok", text: "214 sources reviewed" },
+      { kind: "ok", text: "12 on-point authorities identified" },
+      { kind: "ok", text: "citations validated (still good law)" },
+      { kind: "ok", text: "memo drafted with citations" },
+      { kind: "wait", text: "waiting on approval (Supervising Attorney)" },
+      { kind: "done", text: "done in 4m 18s" },
     ],
   },
   {
-    group: "apar",
-    label: "AP / AR",
-    title: "Vendor Onboarding & W-9 Copilot",
-    goal: "Collect and verify new-vendor details, tax forms, and bank info before the first payment.",
-    persona: "AP Accountant",
-    approver: "Finance Manager",
-    trigger: "A team member requests a new vendor be set up.",
+    group: "research",
+    label: "Research & Drafting",
+    title: "Contract Drafting Copilot",
+    goal: "Draft a first-pass agreement from your templates and the deal terms.",
+    persona: "Associate",
+    approver: "Partner",
+    trigger: "You provide the deal terms or a term sheet.",
     actions: [
-      "Requests and reads the W-9 and banking details",
-      "Validates TIN and checks for duplicate vendors",
-      "Screens against sanctions and denied-party lists",
-      "Drafts the vendor master record for review",
+      "Selects the right template and playbook clauses",
+      "Fills in parties, terms, and defined terms",
+      "Assembles a complete first draft",
+      "Flags open items needing a business decision",
+      "Produces a clause-by-clause summary",
     ],
     value: [
-      "Fewer payment errors and fraud risk",
-      "No duplicate vendor records",
-      "Faster, compliant onboarding",
-      "Complete documentation on file",
+      "First drafts in minutes",
+      "Built on your approved templates",
+      "Consistent clause language",
+      "More time for judgment calls",
     ],
-    runtime: "2m 12s",
+    runtime: "2m 48s",
     trace: [
-      { kind: "run", text: "connecting to email + ERP…" },
-      { kind: "ok", text: "W-9 received and parsed" },
-      { kind: "ok", text: "TIN validated · no duplicate vendor" },
-      { kind: "ok", text: "sanctions screen clean" },
-      { kind: "ok", text: "vendor record drafted" },
-      { kind: "wait", text: "waiting on approval (Finance Manager)" },
-      { kind: "done", text: "done in 2m 12s" },
+      { kind: "run", text: "loading template library…" },
+      { kind: "ok", text: "template selected: Services Agreement" },
+      { kind: "ok", text: "deal terms mapped to clauses" },
+      { kind: "ok", text: "first draft assembled" },
+      { kind: "ok", text: "3 open items flagged" },
+      { kind: "wait", text: "waiting on approval (Partner)" },
+      { kind: "done", text: "done in 2m 48s" },
     ],
   },
   {
-    group: "close",
-    label: "Close & Reporting",
-    title: "Bank Reconciliation Copilot",
-    goal: "Match bank transactions to your ledger and surface only the exceptions that need you.",
-    persona: "Staff Accountant",
-    approver: "Controller",
-    trigger: "A bank feed syncs, or you start a period-end reconciliation.",
+    group: "research",
+    label: "Research & Drafting",
+    title: "Matter Intake & Triage Copilot",
+    goal: "Intake new matters, run a preliminary conflicts check, and route them to the right team.",
+    persona: "Intake Coordinator",
+    approver: "General Counsel",
+    trigger: "A new matter request or client inquiry arrives.",
     actions: [
-      "Pulls bank transactions and ledger entries",
-      "Auto-matches by amount, date, and reference",
-      "Groups and explains the unmatched exceptions",
-      "Proposes journal entries for fees and interest",
-      "Writes a reconciliation summary with the balance",
+      "Captures parties, matter type, and key facts",
+      "Runs a preliminary conflicts check",
+      "Classifies and routes to the right practice group",
+      "Drafts the engagement scope for review",
+      "Opens the matter record on approval",
     ],
     value: [
-      "Reconciliations in minutes, not hours",
-      "Only true exceptions reach your desk",
-      "Fewer month-end surprises",
-      "A documented, reviewable match trail",
+      "Faster intake",
+      "No conflicts slip through",
+      "Consistent matter data",
+      "Less administrative load",
     ],
-    runtime: "2m 20s",
+    runtime: "1m 55s",
     trace: [
-      { kind: "run", text: "connecting to bank feed…" },
-      { kind: "ok", text: "412 transactions pulled" },
-      { kind: "ok", text: "398 auto-matched (96.6%)" },
-      { kind: "ok", text: "14 exceptions grouped" },
-      { kind: "ok", text: "2 fee entries proposed" },
-      { kind: "wait", text: "waiting on approval (Controller)" },
-      { kind: "ok", text: "approved · reconciliation closed" },
-      { kind: "done", text: "done in 2m 20s" },
-    ],
-  },
-  {
-    group: "close",
-    label: "Close & Reporting",
-    title: "Month-End Close Copilot",
-    goal: "Run the close checklist, prepare accruals and reconciliations, and track what's outstanding.",
-    persona: "Financial Controller",
-    approver: "CFO",
-    trigger: "You kick off the close for the period.",
-    actions: [
-      "Works the close checklist task by task",
-      "Prepares recurring accruals and prepaid schedules",
-      "Reconciles key balance-sheet accounts",
-      "Flags variances against prior period and budget",
-      "Reports what's blocking the close in real time",
-    ],
-    value: [
-      "A faster, more predictable close",
-      "Nothing falls through the cracks",
-      "Fewer late adjusting entries",
-      "Clear status for the whole team",
-    ],
-    runtime: "4m 02s",
-    trace: [
-      { kind: "run", text: "loading close checklist…" },
-      { kind: "ok", text: "18 of 24 tasks automated" },
-      { kind: "ok", text: "accruals + prepaids prepared" },
-      { kind: "ok", text: "balance-sheet accounts reconciled" },
-      { kind: "ok", text: "3 variances flagged" },
-      { kind: "wait", text: "waiting on approval (CFO)" },
-      { kind: "done", text: "done in 4m 02s" },
-    ],
-  },
-  {
-    group: "close",
-    label: "Close & Reporting",
-    title: "Financial Reporting Copilot",
-    goal: "Turn ledger data into an executive-ready report with variance commentary.",
-    persona: "Financial Controller",
-    approver: "CFO",
-    trigger: "You choose a reporting period from the dashboard.",
-    actions: [
-      "Pulls the latest actuals and budget data",
-      "Builds P&L, balance sheet, and cash flow",
-      "Compares actuals against budget and prior period",
-      "Flags unusual trends automatically",
-      "Writes an executive summary in plain language",
-    ],
-    value: [
-      "Faster board and management reporting",
-      "Consistent, ready-to-send insights",
-      "Less time in spreadsheets",
-      "Earlier visibility into variances",
-    ],
-    runtime: "3m 05s",
-    trace: [
-      { kind: "run", text: "connecting to ERP…" },
-      { kind: "ok", text: "actuals + budget pulled" },
-      { kind: "ok", text: "P&L, BS, cash flow built" },
-      { kind: "ok", text: "3 variances flagged with commentary" },
-      { kind: "ok", text: "executive summary drafted" },
-      { kind: "wait", text: "waiting on approval (CFO)" },
-      { kind: "ok", text: "approved by J. Lin" },
-      { kind: "done", text: "done in 3m 05s" },
+      { kind: "run", text: "reading intake request…" },
+      { kind: "ok", text: "parties + matter type captured" },
+      { kind: "ok", text: "conflicts check: no conflict found" },
+      { kind: "ok", text: "routed to Commercial group" },
+      { kind: "ok", text: "engagement scope drafted" },
+      { kind: "wait", text: "waiting on approval (General Counsel)" },
+      { kind: "done", text: "done in 1m 55s" },
     ],
   },
   {
     group: "compliance",
-    label: "Compliance & Audit",
-    title: "Expense Audit Copilot",
-    goal: "Check employee expense claims against policy before you reimburse them.",
-    persona: "Expense Auditor",
-    approver: "Finance Manager",
-    trigger: "An employee submits a receipt or expense report.",
+    label: "Compliance & Risk",
+    title: "Compliance Monitoring Copilot",
+    goal: "Monitor regulatory changes and map them to your policies and obligations.",
+    persona: "Compliance Analyst",
+    approver: "Compliance Officer",
+    trigger: "A regulator publishes an update, or on your weekly scan.",
     actions: [
-      "Reads receipts and expense details automatically",
-      "Verifies merchant, amount, and category",
-      "Flags duplicate and split claims",
-      "Checks each line against company policy",
-      "Writes a short audit summary",
+      "Tracks changes across relevant regulators",
+      "Maps each change to affected policies and controls",
+      "Assesses impact and required action",
+      "Drafts update notes for stakeholders",
+      "Logs the assessment for the record",
     ],
     value: [
-      "Lower reimbursement fraud risk",
-      "Policy applied the same way every time",
-      "Faster reimbursements for employees",
-      "Cleaner records for audit",
+      "Nothing missed on regulatory change",
+      "Clear ownership of each obligation",
+      "Faster policy updates",
+      "An audit-ready trail",
     ],
-    runtime: "1m 22s",
+    runtime: "3m 30s",
     trace: [
-      { kind: "run", text: "connecting to expense tool…" },
-      { kind: "ok", text: "reading receipt_travel.jpg" },
-      { kind: "ok", text: "merchant + amount extracted" },
-      { kind: "ok", text: "no duplicate · policy check passed" },
-      { kind: "ok", text: "audit summary ready" },
-      { kind: "wait", text: "waiting on approval (Finance Manager)" },
-      { kind: "ok", text: "approved · reimbursement queued" },
-      { kind: "done", text: "done in 1m 22s" },
+      { kind: "run", text: "scanning regulatory feeds…" },
+      { kind: "ok", text: "7 updates identified this week" },
+      { kind: "ok", text: "mapped to 4 policies" },
+      { kind: "ok", text: "2 flagged as high impact" },
+      { kind: "ok", text: "update notes drafted" },
+      { kind: "wait", text: "waiting on approval (Compliance Officer)" },
+      { kind: "done", text: "done in 3m 30s" },
     ],
   },
   {
     group: "compliance",
-    label: "Compliance & Audit",
-    title: "Audit Preparation Copilot",
-    goal: "Assemble the PBC list, pull support, and tie balances to source before the auditors arrive.",
-    persona: "Assistant Controller",
-    approver: "Controller",
-    trigger: "You start prep for an external or internal audit.",
+    label: "Compliance & Risk",
+    title: "E-Discovery Copilot",
+    goal: "Cull, review, and tag documents for relevance and privilege in discovery.",
+    persona: "Litigation Paralegal",
+    approver: "Litigation Associate",
+    trigger: "A document set is loaded for review.",
     actions: [
-      "Builds the PBC request list from the trial balance",
-      "Gathers invoices, statements, and contracts as support",
-      "Ties account balances back to source documents",
-      "Flags gaps and missing documentation",
-      "Packages everything into an auditor-ready workpaper set",
+      "De-duplicates and threads the document set",
+      "Ranks documents by relevance to the issues",
+      "Flags potentially privileged material",
+      "Suggests responsiveness and issue tags",
+      "Produces a review summary with metrics",
     ],
     value: [
-      "Weeks of prep compressed into days",
-      "No last-minute document scrambles",
-      "Every balance traceable to support",
-      "A smoother, cheaper audit",
+      "Faster, lower-cost review",
+      "Privilege caught early",
+      "Consistent tagging",
+      "A defensible review record",
     ],
-    runtime: "5m 30s",
+    runtime: "5m 12s",
     trace: [
-      { kind: "run", text: "loading trial balance…" },
-      { kind: "ok", text: "PBC list generated · 46 items" },
-      { kind: "ok", text: "support gathered for 41 items" },
-      { kind: "ok", text: "balances tied to source" },
-      { kind: "ok", text: "5 gaps flagged for follow-up" },
-      { kind: "wait", text: "waiting on approval (Controller)" },
-      { kind: "done", text: "done in 5m 30s" },
+      { kind: "run", text: "loading document set…" },
+      { kind: "ok", text: "24,180 docs de-duplicated → 9,412" },
+      { kind: "ok", text: "relevance ranking complete" },
+      { kind: "ok", text: "137 privileged docs flagged" },
+      { kind: "ok", text: "issue tags suggested" },
+      { kind: "wait", text: "waiting on approval (Litigation Associate)" },
+      { kind: "done", text: "done in 5m 12s" },
     ],
   },
   {
     group: "compliance",
-    label: "Compliance & Audit",
-    title: "Sales Tax & Compliance Copilot",
-    goal: "Check transactions for correct tax treatment and prepare filings for your review.",
-    persona: "Tax Accountant",
-    approver: "Controller",
-    trigger: "On a filing deadline, or when new transactions sync.",
+    label: "Compliance & Risk",
+    title: "Obligation & Risk Tracking Copilot",
+    goal: "Extract obligations and key dates from executed contracts and track them to term.",
+    persona: "Contracts Manager",
+    approver: "General Counsel",
+    trigger: "A contract is executed, or on your renewal review.",
     actions: [
-      "Reviews transactions for nexus and taxability",
-      "Recalculates tax by jurisdiction",
-      "Flags mis-charged or exempt transactions",
-      "Prepares the return with supporting detail",
-      "Summarizes what changed since last period",
+      "Extracts obligations, deadlines, and renewal dates",
+      "Assigns owners and reminder schedules",
+      "Flags upcoming renewals and auto-renewals",
+      "Surfaces risk and non-compliance exposure",
+      "Drafts a status report for the business",
     ],
     value: [
-      "Lower risk of penalties and interest",
-      "Consistent treatment across jurisdictions",
-      "Filings prepared, not just calculated",
-      "A documented compliance trail",
+      "No missed renewals or deadlines",
+      "Clear obligation ownership",
+      "Early warning on risk",
+      "A single source of truth",
     ],
-    runtime: "3m 14s",
+    runtime: "2m 34s",
     trace: [
-      { kind: "run", text: "connecting to ERP…" },
-      { kind: "ok", text: "transactions reviewed for nexus" },
-      { kind: "ok", text: "tax recalculated by jurisdiction" },
-      { kind: "ok", text: "4 mis-charged transactions flagged" },
-      { kind: "ok", text: "return prepared with detail" },
-      { kind: "wait", text: "waiting on approval (Controller)" },
-      { kind: "done", text: "done in 3m 14s" },
+      { kind: "run", text: "reading executed contracts…" },
+      { kind: "ok", text: "58 obligations extracted" },
+      { kind: "ok", text: "owners + reminders assigned" },
+      { kind: "ok", text: "3 auto-renewals flagged" },
+      { kind: "ok", text: "status report drafted" },
+      { kind: "wait", text: "waiting on approval (General Counsel)" },
+      { kind: "done", text: "done in 2m 34s" },
     ],
   },
 ];
 
-// ---------------- Integrations (accounting-focused) ----------------
+// ---------------- Integrations (legal-focused) ----------------
 
 type LandingIntegrationCategory =
-  | "ERP & Accounting"
-  | "Payments & Banking"
-  | "Expense & Cards"
+  | "DMS & Matter Mgmt"
+  | "Contract & Signature"
+  | "Research & Litigation"
   | "Docs & Comms";
 
 type LandingIntegration = {
@@ -412,36 +411,36 @@ type LandingIntegration = {
 };
 
 const INTEGRATION_CATEGORIES: LandingIntegrationCategory[] = [
-  "ERP & Accounting",
-  "Payments & Banking",
-  "Expense & Cards",
+  "DMS & Matter Mgmt",
+  "Contract & Signature",
+  "Research & Litigation",
   "Docs & Comms",
 ];
 
 const LANDING_INTEGRATIONS: LandingIntegration[] = [
-  // ERP & Accounting
-  { slug: "quickbooks", name: "QuickBooks", domain: "quickbooks.intuit.com", category: "ERP & Accounting" },
-  { slug: "xero", name: "Xero", domain: "xero.com", category: "ERP & Accounting" },
-  { slug: "netsuite", name: "NetSuite", domain: "netsuite.com", category: "ERP & Accounting" },
-  { slug: "sage-intacct", name: "Sage Intacct", domain: "sageintacct.com", category: "ERP & Accounting" },
-  { slug: "sage", name: "Sage", domain: "sage.com", category: "ERP & Accounting" },
-  { slug: "freshbooks", name: "FreshBooks", domain: "freshbooks.com", category: "ERP & Accounting" },
+  // DMS & Matter Mgmt
+  { slug: "imanage", name: "iManage", domain: "imanage.com", category: "DMS & Matter Mgmt" },
+  { slug: "netdocuments", name: "NetDocuments", domain: "netdocuments.com", category: "DMS & Matter Mgmt" },
+  { slug: "clio", name: "Clio", domain: "clio.com", category: "DMS & Matter Mgmt" },
+  { slug: "mycase", name: "MyCase", domain: "mycase.com", category: "DMS & Matter Mgmt" },
+  { slug: "litera", name: "Litera", domain: "litera.com", category: "DMS & Matter Mgmt" },
+  { slug: "sharepoint", name: "SharePoint", domain: "sharepoint.com", category: "DMS & Matter Mgmt" },
 
-  // Payments & Banking
-  { slug: "bill", name: "BILL", domain: "bill.com", category: "Payments & Banking" },
-  { slug: "stripe", name: "Stripe", domain: "stripe.com", category: "Payments & Banking" },
-  { slug: "plaid", name: "Plaid", domain: "plaid.com", category: "Payments & Banking" },
-  { slug: "mercury", name: "Mercury", domain: "mercury.com", category: "Payments & Banking" },
-  { slug: "wise", name: "Wise", domain: "wise.com", category: "Payments & Banking" },
-  { slug: "melio", name: "Melio", domain: "meliopayments.com", category: "Payments & Banking" },
+  // Contract & Signature
+  { slug: "docusign", name: "DocuSign", domain: "docusign.com", category: "Contract & Signature" },
+  { slug: "ironclad", name: "Ironclad", domain: "ironcladapp.com", category: "Contract & Signature" },
+  { slug: "icertis", name: "Icertis", domain: "icertis.com", category: "Contract & Signature" },
+  { slug: "adobe-sign", name: "Adobe Acrobat Sign", domain: "adobe.com", category: "Contract & Signature" },
+  { slug: "pandadoc", name: "PandaDoc", domain: "pandadoc.com", category: "Contract & Signature" },
+  { slug: "agiloft", name: "Agiloft", domain: "agiloft.com", category: "Contract & Signature" },
 
-  // Expense & Cards
-  { slug: "ramp", name: "Ramp", domain: "ramp.com", category: "Expense & Cards" },
-  { slug: "brex", name: "Brex", domain: "brex.com", category: "Expense & Cards" },
-  { slug: "expensify", name: "Expensify", domain: "expensify.com", category: "Expense & Cards" },
-  { slug: "concur", name: "SAP Concur", domain: "concur.com", category: "Expense & Cards" },
-  { slug: "airbase", name: "Airbase", domain: "airbase.com", category: "Expense & Cards" },
-  { slug: "divvy", name: "BILL Spend", domain: "divvy.co", category: "Expense & Cards" },
+  // Research & Litigation
+  { slug: "westlaw", name: "Westlaw", domain: "thomsonreuters.com", category: "Research & Litigation" },
+  { slug: "lexisnexis", name: "LexisNexis", domain: "lexisnexis.com", category: "Research & Litigation" },
+  { slug: "relativity", name: "Relativity", domain: "relativity.com", category: "Research & Litigation" },
+  { slug: "everlaw", name: "Everlaw", domain: "everlaw.com", category: "Research & Litigation" },
+  { slug: "casetext", name: "Casetext", domain: "casetext.com", category: "Research & Litigation" },
+  { slug: "logikcull", name: "Logikcull", domain: "logikcull.com", category: "Research & Litigation" },
 
   // Docs & Comms
   {
@@ -482,8 +481,8 @@ function IndexContent() {
   const { theme } = useTheme();
 
   const onAuthenticated = () => {
-    // The app is scoped to accounting.
-    setStoredIndustry("accounting");
+    // The app is scoped to legal.
+    setStoredIndustry("legal");
     navigate({ to: "/app" });
   };
 
@@ -563,9 +562,9 @@ function Nav({ onLogin }: { onLogin: () => void }) {
 // ---------------- Hero ----------------
 
 const HERO_TRUST: { icon: LucideIcon; label: string }[] = [
-  { icon: Landmark, label: "Works with QuickBooks, Xero & NetSuite" },
-  { icon: ShieldCheck, label: "Human approval before anything posts" },
-  { icon: ScrollText, label: "Full audit trail on every action" },
+  { icon: Landmark, label: "Works with iManage, NetDocuments & Clio" },
+  { icon: ShieldCheck, label: "Attorney review before anything is sent" },
+  { icon: ScrollText, label: "Full audit trail on every document" },
 ];
 
 function Hero({ onLogin }: { onLogin: () => void }) {
@@ -580,7 +579,7 @@ function Hero({ onLogin }: { onLogin: () => void }) {
       <div className="relative mx-auto max-w-7xl px-5 py-20 md:py-28">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm">
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          Built for CFOs, controllers & finance teams
+          Built for law firms, in-house legal & compliance teams
         </div>
         <h1 className="max-w-3xl text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
           {HERO.tagline}
@@ -632,79 +631,79 @@ const CORE_CAPABILITIES: CoreCapability[] = [
   {
     name: "Document Intelligence",
     icon: FileText,
-    desc: "Reads invoices, receipts, and statements, then extracts clean, structured data.",
+    desc: "Reads contracts, filings, and discovery documents, then extracts clauses, parties, and dates.",
     detail:
-      "Turns any inbound document — PDFs, scans, or phone photos — into structured, ledger-ready data without manual keying. Every field comes with a confidence score, so low-confidence extractions are flagged for a human instead of posted blindly.",
+      "Turns any inbound document — contracts, briefs, leases, or scanned discovery — into structured, review-ready data without manual reading. Every extraction comes with a confidence score, so uncertain terms are flagged for an attorney instead of relied on blindly.",
     points: [
-      "OCR for invoices, receipts, and bank statements",
-      "Line-item, total, tax, and multi-currency parsing",
-      "Vendor and GL account recognition",
-      "Confidence scoring with human review on exceptions",
+      "OCR for contracts, filings, and discovery sets",
+      "Clause, party, defined-term, and date extraction",
+      "Handles scans, PDFs, and long-form agreements",
+      "Confidence scoring with attorney review on exceptions",
     ],
   },
   {
-    name: "Ledger Sync",
+    name: "Playbook & Precedent",
     icon: Landmark,
-    desc: "Two-way sync with QuickBooks, Xero, NetSuite, and Sage — coding and entries write back.",
+    desc: "Your clause library, playbooks, and prior matters — so every review reflects your standards.",
     detail:
-      "A live, two-way connection to your accounting system of record. Copilots read your chart of accounts and open items, then write approved entries straight back — no CSV exports, no re-keying, no drift between systems.",
+      "A living knowledge base of your firm's positions. Copilots read your fallback clauses, playbooks, precedent, and prior matters, then apply them consistently — so every review and draft reflects how your team actually works, not a generic template.",
     points: [
-      "Two-way sync with QuickBooks, Xero, NetSuite & Sage",
-      "Automatic GL coding from your chart of accounts",
-      "Journal entry and invoice write-back",
-      "Vendor, customer, and dimension mapping",
+      "Central clause and template library",
+      "Negotiation playbooks with fallback positions",
+      "Precedent and prior-matter retrieval",
+      "Grounded in your firm's own standards",
     ],
   },
   {
-    name: "Reconciliation Engine",
+    name: "Clause & Risk Analysis",
     icon: Workflow,
-    desc: "Auto-matches bank, ledger, and sub-ledger activity and surfaces only the exceptions.",
+    desc: "Compares every clause against your positions and surfaces deviations, gaps, and red flags.",
     detail:
-      "Matches transactions across your bank feeds, general ledger, and AP/AR sub-ledgers automatically, then groups and explains only the exceptions that actually need a human — so reconciliations take minutes, not hours.",
+      "Compares each clause against your playbook, flags deviations and missing protections, and explains the risk in plain language — so the issues that need a lawyer's judgment reach your desk first, and the routine ones are already handled.",
     points: [
-      "Auto-matching by amount, date, and reference",
-      "Bank, AP, AR, and inter-company reconciliation",
-      "Exceptions grouped and explained in plain language",
-      "Suggested adjusting entries for fees and interest",
+      "Clause-by-clause comparison to your positions",
+      "Missing-clause and off-market term detection",
+      "Risk explained in plain language, ranked by severity",
+      "Suggested language grounded in your playbook",
     ],
   },
   {
-    name: "Approvals & Controls",
+    name: "Review & Approval Controls",
     icon: ShieldCheck,
-    desc: "Segregation of duties, policy checks, and human sign-off before anything posts.",
+    desc: "Conflicts, privilege, and attorney sign-off enforced before anything leaves the firm.",
     detail:
-      "Every action a copilot proposes runs through your controls before it touches the ledger. Approval routing, spend thresholds, and policy checks are enforced automatically, and nothing posts without the right person signing off.",
+      "Every action a copilot proposes runs through your controls before anything is sent. Conflicts checks, privilege protection, and approval routing are enforced automatically, and nothing goes out without the right attorney signing off.",
     points: [
-      "Configurable approval routing and thresholds",
-      "Segregation of duties enforced by role",
-      "Company policy checks on every transaction",
-      "Human sign-off required before anything posts",
+      "Configurable approval routing by matter and role",
+      "Conflicts checks and privilege protection",
+      "Role-based access to matters and documents",
+      "Attorney sign-off required before anything is sent",
     ],
   },
   {
     name: "Audit Trail",
     icon: ScrollText,
-    desc: "Every extraction, match, and approval is logged and traceable back to source.",
+    desc: "Every extraction, edit, and approval is logged and traceable back to source.",
     detail:
-      "A complete, tamper-evident record of everything the platform does. Each extraction, match, edit, and approval is logged with the user and timestamp and linked back to its source document — audit-ready by default.",
+      "A complete, tamper-evident record of everything the platform does. Each extraction, edit, and approval is logged with the user and timestamp and linked back to its source document — defensible and review-ready by default.",
     points: [
       "Every action logged with user and timestamp",
-      "One-click trace from entry back to source document",
+      "One-click trace from a finding back to source",
       "Immutable history of edits and approvals",
-      "Exportable workpaper set for auditors",
+      "Exportable record for audits and disputes",
     ],
   },
   {
-    name: "Reporting & Insights",
+    name: "Matter Insights",
     icon: BarChart3,
-    desc: "P&L, balance sheet, and cash flow with variance commentary written for you.",
+    desc: "Obligations, key dates, and risk exposure across your matters, summarized for you.",
     detail:
-      "Turns your ledger data into board-ready reporting on demand. Statements are built, actuals compared against budget and prior period, and variances explained in plain language — ready for you to review and send.",
+      "Turns your matter and contract data into a clear view on demand. Obligations and key dates are tracked, risk exposure is surfaced, and status is summarized in plain language — ready for you to review and act on.",
     points: [
-      "P&L, balance sheet, and cash flow statements",
-      "Budget vs actual and prior-period comparisons",
-      "Automatic variance commentary",
-      "Board- and management-ready exports",
+      "Obligation and key-date tracking across matters",
+      "Renewal and deadline alerts",
+      "Risk and exposure summaries",
+      "Status reports ready to share with the business",
     ],
   },
 ];
@@ -716,16 +715,16 @@ function CoreDiagram() {
       <div className="mx-auto max-w-7xl px-5">
         <div className="mb-12 flex max-w-2xl flex-col gap-3">
           <span className="font-mono text-xs uppercase tracking-wider text-primary">
-            The accounting core
+            The legal core
           </span>
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-            Every copilot runs on the same finance operating system.
+            Every copilot runs on the same legal operating system.
           </h2>
           <p className="text-sm text-muted-foreground md:text-base">
             Instead of rebuilding the basics for every task, each copilot inherits the same six
-            building blocks — document intelligence, ledger sync, reconciliation, controls, audit
-            trail, and reporting — already wired together and tuned for accounting. Click any block
-            to see what it does.
+            building blocks — document intelligence, playbook &amp; precedent, clause &amp; risk
+            analysis, review controls, audit trail, and matter insights — already wired together and
+            tuned for legal work. Click any block to see what it does.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
@@ -797,7 +796,7 @@ function CoreModal({ capability, onClose }: { capability: CoreCapability; onClos
             </span>
             <div>
               <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-primary">
-                Accounting core
+                Legal core
               </span>
               <h3 id="core-title" className="mt-0.5 text-xl font-semibold tracking-tight">
                 {capability.name}
@@ -1032,7 +1031,7 @@ function CopilotLibrary() {
           </h2>
           <p className="max-w-2xl text-sm text-muted-foreground">
             Every copilot follows the same shape: it starts on a trigger, handles the busywork with
-            AI, and stops for your approval before anything posts. Click any card to see how it
+            AI, and stops for your approval before anything is sent. Click any card to see how it
             runs.
           </p>
         </div>
@@ -1188,7 +1187,7 @@ function CopilotModal({ copilot, onClose }: { copilot: Copilot; onClose: () => v
               You stay in control — <b className="font-semibold text-primary">
                 {copilot.approver}
               </b>{" "}
-              approves before anything posts.
+              approves before anything is sent.
             </div>
 
             <div>
@@ -1293,11 +1292,12 @@ function IntegrationCatalog() {
             Integrations
           </span>
           <h2 className="mx-auto max-w-2xl text-3xl font-semibold tracking-tight md:text-4xl">
-            Connects to the tools your finance team already runs on.
+            Connects to the tools your legal team already runs on.
           </h2>
           <p className="mx-auto max-w-2xl text-sm text-muted-foreground">
-            Authenticate once, then read and post across your ERP, banks, payment rails, expense
-            tools, and document stores — no re-keying, no CSV exports.
+            Authenticate once, then read and work across your document management system, contract
+            and signature tools, research and litigation platforms, and inboxes — no re-keying, no
+            exports.
           </p>
         </div>
 
@@ -1359,10 +1359,10 @@ function CatalogChip({
 
 function PlatformGrid() {
   const rows = [
-    { k: "Document Intelligence", v: "OCR for invoices, receipts, and statements with structured extraction." },
-    { k: "Ledger Sync", v: "Two-way sync with QuickBooks, Xero, NetSuite, and Sage." },
-    { k: "Reconciliation", v: "Auto-matching for bank, AP, AR, and inter-company activity." },
-    { k: "Controls", v: "Segregation of duties, approval routing, and policy checks." },
+    { k: "Document Intelligence", v: "OCR and clause extraction for contracts, filings, and discovery sets." },
+    { k: "Playbook & Precedent", v: "Your clause library, playbooks, and prior matters as living context." },
+    { k: "Clause & Risk Analysis", v: "Deviation, missing-clause, and red-flag detection against your positions." },
+    { k: "Controls", v: "Conflicts checks, privilege protection, and attorney approval routing." },
     { k: "Audit Trail", v: "Every action logged and traceable back to source." },
     { k: "Security", v: "SSO, role-based access, encryption, and data residency controls." },
   ];
@@ -1374,7 +1374,7 @@ function PlatformGrid() {
             Under the hood
           </span>
           <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight md:text-4xl">
-            Enterprise-grade, built for the controls finance requires.
+            Enterprise-grade, built for the controls legal requires.
           </h2>
         </div>
         <div className="overflow-hidden rounded-2xl border border-border">
@@ -1404,11 +1404,11 @@ function CTASection({ onLogin }: { onLogin: () => void }) {
     <section id="cta" className="py-20">
       <div className="mx-auto max-w-4xl px-5 text-center">
         <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-          Give your finance team back the close.
+          Give your legal team back their time.
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground">
-          See how AP/AR, reconciliation, and reporting copilots run on your own stack. Book a demo,
-          or sign in to your workspace.
+          See how contract review, research, and due-diligence copilots run on your own systems.
+          Book a demo, or sign in to your workspace.
         </p>
         <button
           onClick={onLogin}
@@ -1426,7 +1426,7 @@ function CTASection({ onLogin }: { onLogin: () => void }) {
 function Footer() {
   const columns: { title: string; links: string[] }[] = [
     { title: "Product", links: ["Copilots", "Platform", "Integrations", "Security"] },
-    { title: "Solutions", links: ["Accounts payable", "Accounts receivable", "Month-end close", "Accounting firms"] },
+    { title: "Solutions", links: ["Contract review", "Legal research", "Due diligence", "In-house teams"] },
     { title: "Company", links: ["About", "Customers", "Careers", "Contact"] },
   ];
   return (
@@ -1438,8 +1438,8 @@ function Footer() {
               <LogoLockup />
             </div>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
-              The AI operating system for accounting — AP/AR, reconciliation, close, and reporting,
-              with a human in control of every entry.
+              The AI operating system for legal — contract review, research, due diligence, and
+              compliance, with an attorney in control of every document.
             </p>
           </div>
           {columns.map((col) => (
@@ -1460,8 +1460,8 @@ function Footer() {
           ))}
         </div>
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row">
-          <div>© {new Date().getFullYear()} Ledger AI OS. All rights reserved.</div>
-          <div className="font-mono">The AI operating system for accounting</div>
+          <div>© {new Date().getFullYear()} Counsel AI OS. All rights reserved.</div>
+          <div className="font-mono">The AI operating system for legal</div>
         </div>
       </div>
     </footer>
@@ -1536,7 +1536,7 @@ function AuthModal({
             <p className="mt-1 text-xs text-muted-foreground">
               {tab === "login"
                 ? "Sign in to your workspace."
-                : "Get access to your accounting copilots."}
+                : "Get access to your legal copilots."}
             </p>
           </div>
           <button
